@@ -6,7 +6,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import data from "./data/teachers.json";
-import GlobalMap from "./components/GlobalMap";
+import GlobalMap from "./components/NewGlobalMap";
 
 const App = () => {
   const [teachers, setTeachers] = useState([]);
