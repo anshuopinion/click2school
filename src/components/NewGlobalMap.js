@@ -45,6 +45,7 @@ const GlobalMap = ({ teachers }) => {
             return {
               country: teacher.location.country,
               name: teacher.location.country,
+              code: teacher.location.country_short,
               latLng: teacher.location.latLng,
               teacherCount: countriesTeachers[teacher.location.country_short],
             };
@@ -54,12 +55,20 @@ const GlobalMap = ({ teachers }) => {
     ]);
   }, [teachers]);
 
-  const handleClick = (e, countryCode) => {
+  const handleMarkerClick = (event, code) => {
+    const countryCode = markers[code].code;
     setCountryCode(countryCode);
     mapEl.current.setFocus({
       region: countryCode,
     });
   };
+  // For regionClick
+  // const handleClick = (e, countryCode) => {
+  //   setCountryCode(countryCode);
+  //   mapEl.current.setFocus({
+  //     region: countryCode,
+  //   });
+  // };
 
   return (
     <Container maxW={"container.xl"}>
@@ -69,7 +78,7 @@ const GlobalMap = ({ teachers }) => {
           map={worldMill}
           backgroundColor="transparent"
           zoomOnScroll={false}
-          onRegionClick={handleClick}
+          // onRegionClick={handleClick}
           style={{ height: "100vh", width: "100%" }}
           regionStyle={{
             initial: {
@@ -106,12 +115,13 @@ const GlobalMap = ({ teachers }) => {
               `<div class='marker-tip'>${markers[index].country} ${markers[index].teacherCount}</div>`
             );
           }}
+          onMarkerClick={handleMarkerClick}
           series={{
             markers: [
               {
                 attribute: "r",
                 scale: [3, 10],
-                values: [...markers.map((teacher) => teacher.teacherCount)],
+                values: countriesData,
               },
             ],
             regions: [
