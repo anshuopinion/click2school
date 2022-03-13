@@ -6,9 +6,7 @@ import { VectorMap } from "@react-jvectormap/core";
 
 const GlobalMap = ({ teachers }) => {
   const [countriesData, setContriesData] = useState({});
-  const [isShowMap, setIsShowMap] = useState(true);
   const [markers, setMarkers] = useState([]);
-  const [region, setRegion] = useState("");
 
   const mapEl = useRef(null);
 
@@ -46,87 +44,82 @@ const GlobalMap = ({ teachers }) => {
     ]);
   }, [teachers]);
 
-  useEffect(() => {
-    setIsShowMap(false);
-    setTimeout(() => {
-      setIsShowMap(true);
-    });
-  }, [region, setIsShowMap]);
-
   const handleClick = (e, countryCode) => {
-    setRegion(countryCode);
+    mapEl.current.setFocus({
+      region: countryCode,
+    });
   };
+
+  console.log("ref", mapEl);
 
   return (
     <Container>
-      {isShowMap && (
-        <VectorMap
-          map={worldMill}
-          backgroundColor="transparent"
-          zoomOnScroll={false}
-          onRegionClick={handleClick}
-          style={{ height: "100vh", width: "100%" }}
-          regionStyle={{
-            initial: {
-              fill: "#e4e4e4",
-              fillOpacity: 0.9,
-              stroke: "none",
-              strokeWidth: 0,
-              strokeOpacity: 0,
-              cursor: "pointer",
+      <VectorMap
+        mapRef={mapEl}
+        map={worldMill}
+        backgroundColor="transparent"
+        zoomOnScroll={false}
+        onRegionClick={handleClick}
+        style={{ height: "100vh", width: "100%" }}
+        regionStyle={{
+          initial: {
+            fill: "#e4e4e4",
+            fillOpacity: 0.9,
+            stroke: "none",
+            strokeWidth: 0,
+            strokeOpacity: 0,
+            cursor: "pointer",
+          },
+          hover: {
+            fillOpacity: 0.8,
+            cursor: "pointer",
+          },
+          selected: {
+            fill: "#212121",
+            stroke: "#212121",
+            strokeWidth: 1,
+          },
+          selectedHover: {
+            fillOpacity: 0.8,
+          },
+        }}
+        markerStyle={{
+          initial: {
+            fill: "#F8E23B",
+            stroke: "#383f47",
+          },
+        }}
+        regionsSelectable={true}
+        markers={markers}
+        onMarkerTipShow={(e, label, index) => {
+          label.html(
+            `<div class='marker-tip'>${markers[index].country} ${markers[index].teacherCount}</div>`
+          );
+        }}
+        series={{
+          markers: [
+            {
+              attribute: "r",
+              scale: [3, 10],
+              values: [...markers.map((teacher) => teacher.teacherCount)],
             },
-            hover: {
-              fillOpacity: 0.8,
-              cursor: "pointer",
-            },
-            selected: {
-              fill: "#212121",
-              stroke: "#212121",
-              strokeWidth: 1,
-            },
-            selectedHover: {
-              fillOpacity: 0.8,
-            },
-          }}
-          markerStyle={{
-            initial: {
-              fill: "#F8E23B",
-              stroke: "#383f47",
-            },
-          }}
-          regionsSelectable={true}
-          markers={markers}
-          onMarkerTipShow={(e, label, index) => {
-            label.html(
-              `<div class='marker-tip'>${markers[index].country} ${markers[index].teacherCount}</div>`
-            );
-          }}
-          series={{
-            markers: [
-              {
-                attribute: "r",
-                scale: [3, 10],
-                values: [...markers.map((teacher) => teacher.teacherCount)],
-              },
-            ],
-            regions: [
-              {
-                attribute: "fill",
-                values: countriesData,
+          ],
+          regions: [
+            {
+              attribute: "fill",
+              values: countriesData,
 
-                scale: ["#E5D1F9", "#5606A5"],
-                min: 1,
-                max: 300,
-              },
-            ],
-          }}
-          focusOn={{
-            scale: 1,
-            animate: true,
-            region: region,
-          }}
-        />
-      )}
+              scale: ["#E5D1F9", "#5606A5"],
+              min: 1,
+              max: 300,
+            },
+          ],
+        }}
+        focusOn={{
+          scale: 1,
+          animate: true,
+        }}
+      />
     </Container>
   );
 };
