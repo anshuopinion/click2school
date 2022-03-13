@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+/* The goal of the project is to create a ReactJS based frontend
+ application which lets a user view the teachers on a map.
+ jVectorMap library should be used for working with map.
 
-function App() {
+*/
+import { useState } from "react";
+import { useEffect } from "react";
+import data from "./data/teachers.json";
+import GlobalMap from "./components/GlobalMap";
+
+const App = () => {
+  const [teachers, setTeachers] = useState([]);
+
+  // filter out the teacher with country
+
+  useEffect(() => {
+    if (data) {
+      setTeachers(data);
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <GlobalMap teachers={teachers} />
+      {/* <GlobalMap teachers={teachers} /> */}
     </div>
   );
-}
+};
 
 export default App;
