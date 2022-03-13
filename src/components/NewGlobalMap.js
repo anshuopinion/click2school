@@ -157,8 +157,8 @@ const GlobalMap = ({ teachers }) => {
                 .filter(
                   (teacher) => teacher.location.country_short === countryCode
                 )
-                .map((teacher) => (
-                  <Tr>
+                .map((teacher, i) => (
+                  <Tr key={i}>
                     <Td>{teacher.name}</Td>
                     <Td>{teacher.location.city}</Td>
                     <Td>{teacher.location.country}</Td>
