@@ -10,6 +10,7 @@ const handleClick = (e, countryCode) => {
 
 const GlobalMap = ({ teachers }) => {
   const [countriesData, setContriesData] = useState({});
+  
   const mapRef = useRef();
   useEffect(() => {
     // Filter teacher using country
