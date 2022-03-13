@@ -1,5 +1,5 @@
 import { Container, Heading } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { VectorMap } from "react-jvectormap";
 
 // import "./GlobalMap.css";
@@ -10,7 +10,7 @@ const handleClick = (e, countryCode) => {
 
 const GlobalMap = ({ teachers }) => {
   const [countriesData, setContriesData] = useState({});
-
+  const mapRef = useRef();
   useEffect(() => {
     // Filter teacher using country
     const countriesTeachers = teachers.reduce((acc, teacher) => {
@@ -50,6 +50,7 @@ const GlobalMap = ({ teachers }) => {
       <Heading>Teacher Country Data</Heading>
 
       <VectorMap
+        mapRef={mapRef}
         map={"world_mill"}
         backgroundColor="transparent"
         zoomOnScroll={false}
