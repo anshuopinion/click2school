@@ -1,3 +1,7 @@
 main {
   display: inline;
 }
+
+.jvectormap-container {
+  height: 80vh;
+}

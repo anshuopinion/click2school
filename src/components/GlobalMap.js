@@ -46,7 +46,7 @@ const GlobalMap = ({ teachers }) => {
   console.log({ countriesData, markers });
 
   return (
-    <>
+    <Container maxW="container.xl" height="100vh">
       <Heading>Teacher Country Data</Heading>
 
       <VectorMap
@@ -79,18 +79,11 @@ const GlobalMap = ({ teachers }) => {
         }}
         regionsSelectable={true}
         markers={markers}
-        // onMarkerTipShow={(e, label, index) => {
-        //   label.html(`<p data-tip="hello world">Tooltip</p>`);
-        // }}
-        // onRegionTipShow={(event, label, code) => {
-        //   label.html(
-        //     "<b>" +
-        //       label.html() +
-        //       "</b></br>" +
-        //       "<b>Unemployment rate: </b>" +
-        //       "%"
-        //   );
-        // }}
+        onMarkerTipShow={(e, label, index) => {
+          label.html(
+            `<div class='marker-tip'>${markers[index].country} ${markers[index].teacherCount}</div>`
+          );
+        }}
         markerStyle={{
           initial: {
             fill: "#F8E23B",
@@ -117,7 +110,7 @@ const GlobalMap = ({ teachers }) => {
           ],
         }}
       />
-    </>
+    </Container>
   );
 };
 
