@@ -1,8 +1,7 @@
-import { Container, Heading } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import React, { useEffect, useState, useRef } from "react";
-import { worldMill } from "@react-jvectormap/world";
+import worldMill from "../data/worldMill.json";
 import { VectorMap } from "@react-jvectormap/core";
-import { getData } from "country-list";
 // import "./GlobalMap.css";
 
 const handleClick = (e, countryCode) => {
@@ -42,7 +41,7 @@ const GlobalMap = ({ teachers }) => {
     ]);
   }, [teachers]);
 
-  console.log("markers", markers);
+  console.log("markers", countriesData);
 
   return (
     <Container>
@@ -84,6 +83,11 @@ const GlobalMap = ({ teachers }) => {
           }}
           regionsSelectable={true}
           markers={markers}
+          onMarkerTipShow={(e, label, index) => {
+            label.html(
+              `<div class='marker-tip'>${markers[index].country} ${markers[index].teacherCount}</div>`
+            );
+          }}
           series={{
             markers: [
               {
@@ -96,9 +100,10 @@ const GlobalMap = ({ teachers }) => {
               {
                 attribute: "fill",
                 values: countriesData,
+
                 scale: ["#E5D1F9", "#5606A5"],
                 min: 1,
-                max: 500,
+                max: 300,
               },
             ],
           }}
